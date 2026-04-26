@@ -2,62 +2,115 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ── Design tokens ──────────────────────────────────────────────────── */
+:root {
+  /* Light theme */
+  --page:    #f2f2f2;
+  --surface: #ffffff;
+  --line:    #e8e8e8;
+  --fg:      #0a0a0a;
+  --fg2:     #525252;
+  --fg3:     #a3a3a3;
+  --fg4:     #f5f5f5;
+
+  --btn-bg:  #0a0a0a;
+  --btn-fg:  #ffffff;
+  --ghost-color: rgba(0,0,0,0.45);
+  --ghost-hover: rgba(0,0,0,0.06);
+
+  --input-bg:  #ffffff;
+  --input-bdr: #d4d4d4;
+  --input-fg:  #0a0a0a;
+  --input-ph:  rgba(0,0,0,0.28);
+  --input-ring: rgba(0,0,0,0.12);
+}
+
+.dark {
+  /* Dark theme */
+  --page:    #000000;
+  --surface: #111111;
+  --line:    #222222;
+  --fg:      #fafafa;
+  --fg2:     #a1a1aa;
+  --fg3:     #52525b;
+  --fg4:     #1a1a1a;
+
+  --btn-bg:  #fafafa;
+  --btn-fg:  #000000;
+  --ghost-color: rgba(255,255,255,0.45);
+  --ghost-hover: rgba(255,255,255,0.07);
+
+  --input-bg:  #1c1c1c;
+  --input-bdr: #2e2e2e;
+  --input-fg:  #fafafa;
+  --input-ph:  rgba(255,255,255,0.28);
+  --input-ring: rgba(255,255,255,0.08);
+}
+
+/* ── Base ───────────────────────────────────────────────────────────── */
 @layer base {
+  html { background-color: var(--page); }
+
   body {
-    @apply bg-black text-white antialiased;
+    background-color: var(--page);
+    color: var(--fg);
+    @apply antialiased;
   }
 
-  ::-webkit-scrollbar {
-    @apply w-1.5;
-  }
-  ::-webkit-scrollbar-track {
-    @apply bg-black;
-  }
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: var(--page); }
   ::-webkit-scrollbar-thumb {
-    @apply bg-white/20 rounded-full;
+    background: var(--line);
+    border-radius: 99px;
   }
 }
 
+/* ── Component classes ──────────────────────────────────────────────── */
 @layer components {
-  /* Primary button — white on black page, black on white card */
+
+  .card {
+    background-color: var(--surface);
+    border: 1px solid var(--line);
+    color: var(--fg);
+    @apply rounded-2xl p-6;
+  }
+
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl
-           bg-black text-white font-semibold text-sm
-           hover:bg-black/80 active:bg-black/70
-           transition-all duration-150
+    background-color: var(--btn-bg);
+    color: var(--btn-fg);
+    @apply inline-flex items-center justify-center gap-2
+           px-5 py-2.5 rounded-xl font-semibold text-sm
+           transition-opacity duration-150
            disabled:opacity-40 disabled:cursor-not-allowed;
   }
+  .btn-primary:hover:not(:disabled) { opacity: 0.86; }
 
-  /* Ghost button for dark (black) backgrounds */
   .btn-ghost {
-    @apply inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl
-           bg-transparent hover:bg-white/10 active:bg-white/15
-           text-white/60 hover:text-white font-medium text-sm
+    color: var(--ghost-color);
+    @apply inline-flex items-center justify-center gap-2
+           px-4 py-2 rounded-xl font-medium text-sm
            transition-all duration-150;
   }
-
-  /* Ghost button for light (white card) backgrounds */
-  .btn-ghost-light {
-    @apply inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl
-           bg-transparent hover:bg-black/5 active:bg-black/10
-           text-black/50 hover:text-black font-medium text-sm border border-black/10
-           transition-all duration-150;
+  .btn-ghost:hover {
+    background-color: var(--ghost-hover);
+    color: var(--fg);
   }
 
   .input-field {
-    @apply w-full px-4 py-3 rounded-xl
-           bg-white border border-black/15
-           text-black placeholder-black/30
-           focus:outline-none focus:ring-2 focus:ring-black/20 focus:border-black/30
-           text-sm transition-all duration-150;
+    background-color: var(--input-bg);
+    border: 1px solid var(--input-bdr);
+    color: var(--input-fg);
+    @apply w-full px-4 py-3 rounded-xl text-sm
+           transition-all duration-150 outline-none;
   }
-
-  /* White card that sits on the black background */
-  .card {
-    @apply bg-white text-black rounded-2xl border border-black/10 p-6;
+  .input-field::placeholder { color: var(--input-ph); }
+  .input-field:focus {
+    border-color: var(--fg);
+    box-shadow: 0 0 0 3px var(--input-ring);
   }
 
   .badge {
-    @apply inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium;
+    @apply inline-flex items-center gap-1.5 px-2.5 py-0.5
+           rounded-full text-xs font-medium border;
   }
 }
