@@ -1,25 +1,24 @@
-FROM python:3.11-slim
-
-RUN apt-get update && apt-get install -y --no-install-recommends \
-        libglib2.0-0 libgomp1 libgl1-mesa-glx \
-    && rm -rf /var/lib/apt/lists/*
+# ultralytics/ultralytics:latest-cpu ships Python 3.11 + PyTorch (CPU) +
+# ultralytics + opencv — no need to pip-install any of those here.
+FROM ultralytics/ultralytics:latest-cpu
 
 WORKDIR /app
 
-# ── heavy ML deps in isolated layers so Docker can cache them ──────────────
-# torch CPU (~500 MB) — only re-downloaded when this line changes
+# Only the lightweight web-framework packages
 RUN pip install --no-cache-dir \
-        torch torchvision \
-        --extra-index-url https://download.pytorch.org/whl/cpu
+        "fastapi>=0.109.0" \
+        "uvicorn>=0.27.0" \
+        "sqlalchemy>=2.0.0" \
+        "python-jose[cryptography]>=3.3.0" \
+        "passlib[bcrypt]==1.7.4" \
+        "bcrypt==3.2.2" \
+        "python-multipart>=0.0.9" \
+        "pillow>=10.0.0" \
+        "aiofiles>=23.0.0" \
+        "python-dotenv>=1.0.0" \
+        "psycopg2-binary>=2.9.0" \
+        "email-validator>=2.0.0"
 
-# ultralytics — installed after torch so it reuses torch already present
-RUN pip install --no-cache-dir ultralytics
-
-# ── lightweight app requirements ───────────────────────────────────────────
-COPY backend/requirements.txt ./requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
-
-# ── application code ───────────────────────────────────────────────────────
 COPY backend/ ./
 
 COPY ["only PolyDb.pt", "model.pt"]
@@ -30,5 +29,4 @@ RUN mkdir -p /app/uploads /app/processed
 
 EXPOSE 8000
 
-# run.py reads PORT from the environment — no shell needed
 CMD ["python", "run.py"]
