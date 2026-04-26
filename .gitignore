@@ -1,3 +1,21 @@
-backend/.venv/
-backend/.venv/
+# Python
+__pycache__/
+*.pyc
+*.pyo
 .venv/
+backend/.venv/
+backend/polyp_detector.db
+backend/uploads/
+backend/processed/
+
+# Node
+node_modules/
+dist/
+.vite/
+
+# Env
+.env
+.env.local
+
+# OS
+.DS_Store
