@@ -1,0 +1,19 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "PolyDetect Frontend",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "rootPath": "frontend",
+      "port": 5173
+    },
+    {
+      "name": "PolyDetect Backend",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"],
+      "rootPath": "backend",
+      "port": 8000
+    }
+  ]
+}
