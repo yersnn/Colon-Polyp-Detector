@@ -14,13 +14,12 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy backend source
 COPY backend/ ./
 
-# Copy model file into image (6.7 MB — acceptable to bundle)
-COPY "only PolyDb.pt" "./only PolyDb.pt"
+# JSON array syntax is required when the path contains spaces
+COPY ["only PolyDb.pt", "model.pt"]
 
-# Tell inference.py where the model is
-ENV MODEL_PATH=/app/only\ PolyDb.pt
+ENV MODEL_PATH=/app/model.pt
 
-# Persistent dirs (mount a Railway volume here if you want uploads to survive redeploys)
+# Persistent dirs (mount a Railway volume if you want uploads to survive redeploys)
 RUN mkdir -p /app/uploads /app/processed
 
 EXPOSE 8000
