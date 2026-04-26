@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { analysisApi } from "../api/client";
+import { analysisApi, BASE_URL, mediaUrl } from "../api/client";
 import Navbar from "../components/Navbar";
 import type { Analysis } from "../types";
 
@@ -135,7 +135,7 @@ export default function Results() {
 
               {isDone && displayUrl && isImage && (
                 <img
-                  src={displayUrl}
+                  src={mediaUrl(displayUrl)}
                   alt={view}
                   className="w-full h-full object-contain"
                 />
@@ -144,7 +144,7 @@ export default function Results() {
               {isDone && displayUrl && !isImage && (
                 <video
                   key={displayUrl}
-                  src={displayUrl}
+                  src={mediaUrl(displayUrl)}
                   controls
                   className="w-full h-full object-contain"
                 />
@@ -209,7 +209,7 @@ export default function Results() {
             {/* Download */}
             {isDone && analysis.processed_filename && (
               <a
-                href={`/files/download/${analysis.processed_filename}`}
+                href={`${BASE_URL}/files/download/${analysis.processed_filename}`}
                 download
                 className="btn-primary w-full"
               >

@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { mediaUrl } from "../api/client";
 import type { Analysis } from "../types";
 
 interface Props {
@@ -40,7 +41,7 @@ export default function AnalysisCard({ analysis, onDelete }: Props) {
       <div className="w-full h-36 rounded-lg overflow-hidden bg-surface-2 mb-4 flex items-center justify-center">
         {analysis.original_url && isImage ? (
           <img
-            src={analysis.original_url}
+            src={mediaUrl(analysis.original_url)}
             alt={analysis.filename}
             className="w-full h-full object-cover"
           />

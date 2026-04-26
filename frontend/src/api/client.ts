@@ -1,7 +1,14 @@
 import axios from "axios";
 import type { Analysis, Stats, User } from "../types";
 
-const BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "";
+export const BASE_URL = (import.meta.env.VITE_API_BASE_URL ?? "").replace(/\/$/, "");
+
+/** Convert a relative API path like /files/processed/x.jpg into an absolute URL. */
+export function mediaUrl(path: string | null | undefined): string | undefined {
+  if (!path) return undefined;
+  if (path.startsWith("http")) return path; // already absolute
+  return `${BASE_URL}${path}`;
+}
 
 const api = axios.create({ baseURL: BASE_URL });
 
