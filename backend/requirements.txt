@@ -12,6 +12,7 @@ aiofiles>=23.0.0
 python-dotenv>=1.0.0
 psycopg2-binary>=2.9.0
 email-validator>=2.0.0
+ultralytics>=8.0.0
 # CPU-only torch — much smaller than the CUDA build (~500 MB vs 2 GB)
 --extra-index-url https://download.pytorch.org/whl/cpu
 torch>=2.0.0
