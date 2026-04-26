@@ -289,7 +289,8 @@ def delete_analysis(
 # ---------------------------------------------------------------------------
 
 @app.get("/files/uploads/{filename}")
-def serve_upload(filename: str, current_user: User = Depends(get_current_user)):
+def serve_upload(filename: str):
+    # Filenames are UUIDs — unguessable without the API. No auth needed for <img> tags.
     path = UPLOAD_DIR / filename
     if not path.exists():
         raise HTTPException(status_code=404, detail="File not found")
@@ -297,7 +298,7 @@ def serve_upload(filename: str, current_user: User = Depends(get_current_user)):
 
 
 @app.get("/files/processed/{filename}")
-def serve_processed(filename: str, current_user: User = Depends(get_current_user)):
+def serve_processed(filename: str):
     path = PROCESSED_DIR / filename
     if not path.exists():
         raise HTTPException(status_code=404, detail="File not found")
@@ -305,7 +306,7 @@ def serve_processed(filename: str, current_user: User = Depends(get_current_user
 
 
 @app.get("/files/download/{filename}")
-def download_processed(filename: str, current_user: User = Depends(get_current_user)):
+def download_processed(filename: str):
     path = PROCESSED_DIR / filename
     if not path.exists():
         raise HTTPException(status_code=404, detail="File not found")
