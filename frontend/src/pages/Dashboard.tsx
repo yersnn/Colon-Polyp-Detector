@@ -6,18 +6,15 @@ import UploadZone from "../components/UploadZone";
 import type { Analysis, Stats } from "../types";
 
 export default function Dashboard() {
-  const [analyses, setAnalyses] = useState<Analysis[]>([]);
-  const [stats, setStats] = useState<Stats | null>(null);
-  const [uploading, setUploading] = useState(false);
+  const [analyses, setAnalyses]     = useState<Analysis[]>([]);
+  const [stats, setStats]           = useState<Stats | null>(null);
+  const [uploading, setUploading]   = useState(false);
   const [uploadError, setUploadError] = useState("");
   const [loadingList, setLoadingList] = useState(true);
 
   const fetchList = useCallback(async () => {
     try {
-      const [listRes, statsRes] = await Promise.all([
-        analysisApi.list(),
-        analysisApi.stats(),
-      ]);
+      const [listRes, statsRes] = await Promise.all([analysisApi.list(), analysisApi.stats()]);
       setAnalyses(listRes.data);
       setStats(statsRes.data);
     } catch {}
@@ -26,12 +23,12 @@ export default function Dashboard() {
   useEffect(() => {
     fetchList().finally(() => setLoadingList(false));
 
-    // Poll while any analysis is pending/processing
     const interval = setInterval(async () => {
       const { data } = await analysisApi.list().catch(() => ({ data: [] as Analysis[] }));
       setAnalyses(data);
-      const active = data.some((a) => a.status === "pending" || a.status === "processing");
-      if (!active) clearInterval(interval);
+      if (!data.some((a) => a.status === "pending" || a.status === "processing")) {
+        clearInterval(interval);
+      }
     }, 3000);
 
     return () => clearInterval(interval);
@@ -60,23 +57,25 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-navy-900">
+    <div className="min-h-screen bg-black">
       <Navbar />
 
-      <main className="max-w-6xl mx-auto px-4 py-8 space-y-8">
+      <main className="max-w-6xl mx-auto px-6 py-10 space-y-10">
+
         {/* Stats bar */}
         {stats && (
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {[
-              { label: "Total analyses",   value: stats.total_analyses,  unit: "" },
-              { label: "Completed",         value: stats.completed,        unit: "" },
-              { label: "Total detections",  value: stats.total_detections, unit: "" },
-              { label: "Avg confidence",    value: `${(stats.avg_confidence * 100).toFixed(1)}`, unit: "%" },
+              { label: "Total analyses",  value: stats.total_analyses,  unit: "" },
+              { label: "Completed",        value: stats.completed,        unit: "" },
+              { label: "Total detections", value: stats.total_detections, unit: "" },
+              { label: "Avg confidence",   value: `${(stats.avg_confidence * 100).toFixed(1)}`, unit: "%" },
             ].map(({ label, value, unit }) => (
-              <div key={label} className="card py-4 px-5">
-                <p className="text-xs text-gray-500 mb-1">{label}</p>
-                <p className="text-2xl font-bold font-mono text-teal-400">
-                  {value}<span className="text-base text-gray-500">{unit}</span>
+              <div key={label} className="card py-5 px-5">
+                <p className="text-xs font-semibold text-black/40 uppercase tracking-wider mb-2">{label}</p>
+                <p className="text-3xl font-bold font-mono text-black leading-none">
+                  {value}
+                  <span className="text-lg text-black/30 ml-0.5">{unit}</span>
                 </p>
               </div>
             ))}
@@ -85,33 +84,35 @@ export default function Dashboard() {
 
         {/* Upload zone */}
         <section>
-          <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3">
+          <p className="text-xs font-semibold text-white/30 uppercase tracking-widest mb-4">
             New Analysis
-          </h2>
+          </p>
           <UploadZone onUpload={handleUpload} uploading={uploading} />
           {uploadError && (
-            <p className="mt-2 text-sm text-red-400 text-center">{uploadError}</p>
+            <p className="mt-3 text-sm text-red-400 text-center">{uploadError}</p>
           )}
         </section>
 
         {/* History */}
         <section>
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider">
+          <div className="flex items-center justify-between mb-5">
+            <p className="text-xs font-semibold text-white/30 uppercase tracking-widest">
               Analysis History
-            </h2>
+            </p>
             {analyses.length > 0 && (
-              <span className="text-xs text-gray-600">{analyses.length} record{analyses.length !== 1 ? "s" : ""}</span>
+              <span className="text-xs text-white/20 font-mono">
+                {analyses.length} record{analyses.length !== 1 ? "s" : ""}
+              </span>
             )}
           </div>
 
           {loadingList ? (
-            <div className="flex justify-center py-16">
-              <div className="w-8 h-8 border-2 border-teal-500 border-t-transparent rounded-full animate-spin" />
+            <div className="flex justify-center py-20">
+              <div className="w-7 h-7 border-2 border-white/10 border-t-white/60 rounded-full animate-spin" />
             </div>
           ) : analyses.length === 0 ? (
-            <div className="card text-center py-16 text-gray-600">
-              <svg className="w-12 h-12 mx-auto mb-3 opacity-40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className="border border-dashed border-white/15 rounded-2xl text-center py-20 text-white/20">
+              <svg className="w-10 h-10 mx-auto mb-3 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1}
                   d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>

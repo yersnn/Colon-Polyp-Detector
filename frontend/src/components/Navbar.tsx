@@ -11,25 +11,30 @@ export default function Navbar() {
   };
 
   return (
-    <header className="sticky top-0 z-40 border-b border-surface-2 bg-navy-800/90 backdrop-blur-sm">
-      <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
-        <Link to="/dashboard" className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg bg-teal-500/20 border border-teal-500/40 flex items-center justify-center">
-            <svg className="w-4 h-4 text-teal-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18" />
+    <header className="sticky top-0 z-40 border-b border-white/8 bg-black/95 backdrop-blur-md">
+      <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+        <Link to="/dashboard" className="flex items-center gap-3">
+          <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center">
+            <svg className="w-4 h-4 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5}
+                d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z" />
             </svg>
           </div>
-          <span className="font-semibold text-white tracking-tight">PolyDetect</span>
-          <span className="hidden sm:block text-xs text-teal-400 font-mono border border-teal-500/30 bg-teal-500/10 px-1.5 py-0.5 rounded">
+          <span className="font-bold text-white tracking-tight text-base">PolyDetect</span>
+          <span className="text-[10px] text-black font-bold font-mono bg-white px-1.5 py-0.5 rounded tracking-wider">
             AI
           </span>
         </Link>
 
-        <div className="flex items-center gap-3">
-          <span className="hidden sm:block text-xs text-gray-400 font-mono">{user?.email}</span>
-          <button onClick={handleLogout} className="btn-ghost text-xs py-1.5">
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <div className="flex items-center gap-4">
+          {user?.email && (
+            <span className="hidden sm:block text-xs text-white/40 font-mono">{user.email}</span>
+          )}
+          <button
+            onClick={handleLogout}
+            className="flex items-center gap-1.5 text-xs text-white/50 hover:text-white transition-colors duration-150 font-medium"
+          >
+            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
                 d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
             </svg>

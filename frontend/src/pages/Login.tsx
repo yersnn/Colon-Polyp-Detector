@@ -4,12 +4,12 @@ import { authApi } from "../api/client";
 import { useAuth } from "../contexts/AuthContext";
 
 export default function Login() {
-  const [email, setEmail] = useState("");
+  const [email, setEmail]       = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-  const { login } = useAuth();
-  const navigate = useNavigate();
+  const [error, setError]       = useState("");
+  const [loading, setLoading]   = useState(false);
+  const { login }   = useAuth();
+  const navigate    = useNavigate();
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -27,27 +27,30 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-navy-900">
+    <div className="min-h-screen bg-black flex items-center justify-center p-4">
       <div className="w-full max-w-sm">
+
         {/* Logo */}
-        <div className="text-center mb-8">
-          <div className="w-14 h-14 mx-auto rounded-2xl bg-teal-500/15 border border-teal-500/30 flex items-center justify-center mb-4">
-            <svg className="w-7 h-7 text-teal-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
-                d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+        <div className="text-center mb-10">
+          <div className="w-14 h-14 mx-auto rounded-2xl bg-white flex items-center justify-center mb-5">
+            <svg className="w-7 h-7 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z" />
             </svg>
           </div>
-          <h1 className="text-2xl font-bold text-white">PolyDetect</h1>
-          <p className="text-sm text-gray-500 mt-1">AI-powered polyp detection</p>
+          <h1 className="text-2xl font-bold text-white tracking-tight">PolyDetect</h1>
+          <p className="text-sm text-white/40 mt-1">AI-powered polyp detection</p>
         </div>
 
         {/* Card */}
-        <div className="card">
-          <h2 className="text-lg font-semibold text-white mb-6">Sign in to your account</h2>
+        <div className="card shadow-2xl shadow-black/50">
+          <h2 className="text-lg font-bold text-black mb-6">Sign in</h2>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-xs font-medium text-gray-400 mb-1.5">Email</label>
+              <label className="block text-xs font-semibold text-black/50 mb-1.5 uppercase tracking-wide">
+                Email
+              </label>
               <input
                 type="email"
                 className="input-field"
@@ -60,7 +63,9 @@ export default function Login() {
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-gray-400 mb-1.5">Password</label>
+              <label className="block text-xs font-semibold text-black/50 mb-1.5 uppercase tracking-wide">
+                Password
+              </label>
               <input
                 type="password"
                 className="input-field"
@@ -72,7 +77,7 @@ export default function Login() {
             </div>
 
             {error && (
-              <div className="flex items-center gap-2 p-3 rounded-lg bg-red-500/10 border border-red-500/30 text-sm text-red-400">
+              <div className="flex items-center gap-2 p-3 rounded-xl bg-red-50 border border-red-200 text-sm text-red-600">
                 <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
                     d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -91,9 +96,9 @@ export default function Login() {
             </button>
           </form>
 
-          <p className="mt-5 text-center text-sm text-gray-500">
-            Don't have an account?{" "}
-            <Link to="/register" className="text-teal-400 hover:text-teal-300 font-medium">
+          <p className="mt-5 text-center text-sm text-black/40">
+            No account?{" "}
+            <Link to="/register" className="text-black font-semibold hover:underline">
               Create one
             </Link>
           </p>
