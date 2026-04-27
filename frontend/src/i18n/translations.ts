@@ -13,9 +13,9 @@ export const TRANSLATIONS = {
     upload: {
       section: "New Analysis",
       drag: "Drag & drop or click to upload",
-      hint: "Images (JPG, PNG) or Videos (MP4, MOV) · up to 500 MB",
+      hint: "Images (JPG, PNG), Videos (MP4, MOV) or Documents (ODT) · up to 500 MB",
       uploading: "Uploading & analysing…",
-      unsupported: "Unsupported file type. Use JPG, PNG, MP4, MOV, etc.",
+      unsupported: "Unsupported file type. Use JPG, PNG, MP4, MOV or ODT.",
     },
     history: {
       section: "Analysis History",
@@ -87,9 +87,9 @@ export const TRANSLATIONS = {
     upload: {
       section: "Новый анализ",
       drag: "Перетащите или нажмите для загрузки",
-      hint: "Изображения (JPG, PNG) или видео (MP4, MOV) · до 500 МБ",
+      hint: "Изображения (JPG, PNG), видео (MP4, MOV) или документы (ODT) · до 500 МБ",
       uploading: "Загрузка и анализ…",
-      unsupported: "Неподдерживаемый тип файла. Используйте JPG, PNG, MP4, MOV.",
+      unsupported: "Неподдерживаемый тип файла. Используйте JPG, PNG, MP4, MOV или ODT.",
     },
     history: {
       section: "История анализов",
@@ -161,9 +161,9 @@ export const TRANSLATIONS = {
     upload: {
       section: "Жаңа талдау",
       drag: "Сүйреп апарыңыз немесе жүктеу үшін басыңыз",
-      hint: "Суреттер (JPG, PNG) немесе бейне (MP4, MOV) · 500 МБ дейін",
+      hint: "Суреттер (JPG, PNG), бейне (MP4, MOV) немесе құжаттар (ODT) · 500 МБ дейін",
       uploading: "Жүктелуде және талданып жатыр…",
-      unsupported: "Қолдау көрсетілмейтін файл түрі. JPG, PNG, MP4, MOV пайдаланыңыз.",
+      unsupported: "Қолдау көрсетілмейтін файл түрі. JPG, PNG, MP4, MOV немесе ODT пайдаланыңыз.",
     },
     history: {
       section: "Талдау тарихы",

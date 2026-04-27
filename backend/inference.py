@@ -191,6 +191,63 @@ def process_image(input_path: str, output_path: str) -> Dict:
     }
 
 
+def process_document(input_path: str, output_path: str) -> Dict:
+    """Extract embedded images from an ODT file and run detection on each one.
+
+    ODT (OpenDocument Text) files are ZIP archives.  Embedded images live in
+    the ``Pictures/`` directory inside the archive.  We run ``process_image``
+    on every extracted image, aggregate the results, and write the annotated
+    first image as the representative output file.
+    """
+    import shutil
+    import tempfile
+    import zipfile
+
+    t0 = time.time()
+
+    with zipfile.ZipFile(input_path, "r") as z:
+        image_entries = [
+            name for name in z.namelist()
+            if name.lower().startswith("pictures/") and not name.endswith("/")
+        ]
+
+    if not image_entries:
+        raise ValueError("No embedded images found in the ODT document")
+
+    all_confs: list = []
+    total_detections = 0
+    first_output_written = False
+
+    with zipfile.ZipFile(input_path, "r") as z:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            for entry in image_entries:
+                extracted = z.extract(entry, tmpdir)
+                img_out = str(Path(tmpdir) / f"out_{Path(entry).name}.jpg")
+
+                try:
+                    res = process_image(extracted, img_out)
+                    total_detections += res["detections_count"]
+                    if res["avg_confidence"] > 0:
+                        all_confs.append(res["avg_confidence"])
+
+                    if not first_output_written and Path(img_out).exists():
+                        shutil.copy(img_out, output_path)
+                        first_output_written = True
+
+                except Exception as exc:
+                    logger.warning("Skipping image %s in ODT: %s", entry, exc)
+
+    if not first_output_written:
+        raise RuntimeError("Could not process any images from the ODT document")
+
+    avg_conf = float(sum(all_confs) / len(all_confs)) if all_confs else 0.0
+    return {
+        "detections_count": total_detections,
+        "avg_confidence": round(avg_conf, 4),
+        "processing_time": round(time.time() - t0, 3),
+    }
+
+
 def process_video(input_path: str, output_path: str, progress_callback=None) -> Dict:
     """Run inference frame-by-frame on a video and write the annotated output."""
     model = load_model()

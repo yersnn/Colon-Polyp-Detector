@@ -44,6 +44,7 @@ PROCESSED_DIR.mkdir(exist_ok=True)
 
 ALLOWED_IMAGE_EXTS = {".jpg", ".jpeg", ".png", ".bmp", ".tiff", ".webp"}
 ALLOWED_VIDEO_EXTS = {".mp4", ".mov", ".avi", ".mkv", ".webm"}
+ALLOWED_DOC_EXTS   = {".odt"}
 MAX_FILE_BYTES = 500 * 1024 * 1024  # 500 MB
 
 
@@ -128,13 +129,18 @@ def _run_analysis(analysis_id: int):
 
         input_path = str(UPLOAD_DIR / record.original_filename)
         stem = Path(record.original_filename).stem
-        suffix = ".jpg" if record.media_type == "image" else ".mp4"
+        if record.media_type in ("image", "document"):
+            suffix = ".jpg"
+        else:
+            suffix = ".mp4"
         out_name = f"processed_{stem}{suffix}"
         output_path = str(PROCESSED_DIR / out_name)
 
         try:
             if record.media_type == "image":
                 result = inf.process_image(input_path, output_path)
+            elif record.media_type == "document":
+                result = inf.process_document(input_path, output_path)
             else:
                 result = inf.process_video(input_path, output_path)
 
@@ -205,11 +211,13 @@ async def create_analysis(
         media_type = "image"
     elif ext in ALLOWED_VIDEO_EXTS:
         media_type = "video"
+    elif ext in ALLOWED_DOC_EXTS:
+        media_type = "document"
     else:
         raise HTTPException(
             status_code=415,
             detail=f"Unsupported file type '{ext}'. "
-                   f"Images: {ALLOWED_IMAGE_EXTS} | Videos: {ALLOWED_VIDEO_EXTS}",
+                   f"Images: {ALLOWED_IMAGE_EXTS} | Videos: {ALLOWED_VIDEO_EXTS} | Documents: {ALLOWED_DOC_EXTS}",
         )
 
     unique_name = f"{uuid.uuid4().hex}{ext}"

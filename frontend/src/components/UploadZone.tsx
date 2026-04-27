@@ -7,6 +7,7 @@ interface Props { onUpload: (file: File) => void; uploading: boolean; }
 const ACCEPTED = {
   "image/*": [".jpg", ".jpeg", ".png", ".bmp", ".tiff", ".webp"],
   "video/*": [".mp4", ".mov", ".avi", ".mkv", ".webm"],
+  "application/vnd.oasis.opendocument.text": [".odt"],
 };
 
 export default function UploadZone({ onUpload, uploading }: Props) {
@@ -55,8 +56,8 @@ export default function UploadZone({ onUpload, uploading }: Props) {
                 <p className="text-base font-semibold text-fg">{t.upload.drag}</p>
                 <p className="mt-1.5 text-sm text-fg3">{t.upload.hint}</p>
               </div>
-              <div className="flex gap-2 font-mono text-xs text-fg3">
-                {["JPG", "PNG", "MP4", "MOV"].map((f) => (
+              <div className="flex gap-2 font-mono text-xs text-fg3 flex-wrap justify-center">
+                {["JPG", "PNG", "MP4", "MOV", "ODT"].map((f) => (
                   <span key={f} className="px-2.5 py-1 rounded-lg border" style={{ borderColor: "var(--line)" }}>{f}</span>
                 ))}
               </div>
